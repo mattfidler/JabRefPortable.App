@@ -1,0 +1,4 @@
+#+TITLE: JabRefPortable.App
+#+AUTHOR: Matthew L. Fidler
+This attempts to make a cross platform JabRef Portable Application.
+
