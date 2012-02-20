@@ -32,7 +32,6 @@ InstallDir "$EXEDIR"
 !define MUI_PAGE_HEADER_SUBTEXT "JabRef on the Go"
 
 !define MUI_COMPONENTSPAGE_SMALLDESC
-!define MUI_HEADERIMAGE_RIGHT
 
 !define TEMP1 $R0 ;Temp variable
 

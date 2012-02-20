@@ -1,4 +1,4 @@
-    !ifmacrondef _BlowFish
+!ifmacrondef _BlowFish
         !define BlowFish_Decrypt `!insertmacro _BlowFish Decrypt`
         !define BlowFish_Encrypt `!insertmacro _BlowFish Encrypt`
         !macro _BlowFish _cmd _retVar _Data _Key

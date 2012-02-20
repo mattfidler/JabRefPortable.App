@@ -44,7 +44,7 @@
       <string>1.4+</string>
       <key>ClassPath</key>
       <array>
-        <string>$JAVAROOT/../../../App/JabRef/JabRef-2.7.2_01.jar</string>
+        <string>$JAVAROOT/JabRef-2.7.2_01.jar</string>
       </array>
     </dict>
   </dict>

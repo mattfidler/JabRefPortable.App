@@ -3,6 +3,10 @@ Var PROXY_ID
 Var PROXY_IDE
 Var PROXY_NAME
 Var PROXY_SERVER
+Var PROXY_PORT
+Var PROXY_USER
+Var PROXY_PASS
+!include "blowfish.nsh"
 
 Function ReadFileLine
   Exch $0 ;file
@@ -47,11 +51,11 @@ FunctionEnd
 
 Function EnabledAdaptersCallback
   Pop $3
-  DetailPrint "Get Mac Address"
-  IpConfig::GetNetworkAdapterMACAddress $3
-  Pop $0
-  Pop $1
-  StrCpy $PROXY_ID "$PROXY_ID$1"
+  #DetailPrint "Get Mac Address"
+  #IpConfig::GetNetworkAdapterMACAddress $3
+  #Pop $0
+  #Pop $1
+  #StrCpy $PROXY_ID "$PROXY_ID$1"
   GetFunctionAddress $4 IPAddressesCallback
   IpConfig::GetNetworkAdapterIPAddressesCB $3 $4
 FunctionEnd
@@ -62,24 +66,27 @@ Function SetupProxy
   StrCpy $PROXY_ID ""
   GetFunctionAddress $2 EnabledAdaptersCallback
   IpConfig::GetEnabledNetworkAdaptersIDsCB $2
-  ${BlowFish_Encrypt} $PROXY_NAME $PROXY_ID $PROXY_ID
+  StrCpy $PROXY_NAME $PROXY_ID
   IfFileExists "$9\proxy-$PROXY_IDE.ini" 0 end
   ReadIniStr $R0 "$9\proxy-$PROXY_IDE.ini" "$PROXY_NAME" "Server"
-  IfErrors end
   ${BlowFish_Decrypt} $R0 $R0 "$PROXY_ID"
   StrCpy "$PROXY_SERVER" "$R0"
   StrCmp "$R0" "" end
   StrCpy "$R1" "$R0"
   ReadIniStr "$R0" "$9\proxy-$PROXY_IDE.ini" "$PROXY_NAME" "Port"
   ${BlowFish_Decrypt} $R0 $R0 "$PROXY_ID"
+  StrCpy "$PROXY_PORT" "$R0"  
   StrCmp "$R0" "" +2 0
   StrCpy "$R1" "$R1:$R0"
   ReadIniStr "$R0" "$9\proxy-$PROXY_IDE.ini" "$PROXY_NAME" "User"
   ${BlowFish_Decrypt} $R0 $R0 "$PROXY_ID"
+  StrCpy $PROXY_USER "$R0"
+  
   StrCmp "$R0" "" +2 0
   StrCpy "$R2" "$R0"
   ReadIniStr "$R0" "$9\proxy-$PROXY_IDE.ini" "$PROXY_NAME" "Password"
   ${BlowFish_Decrypt} $R0 $R0 "$PROXY_ID"
+  StrCpy $PROXY_PASS $R0
   StrCmp "$R0" "" +3 0
   StrCmp "$R2" "" +2 0
   StrCpy "$R2" "$R2:$R0"
